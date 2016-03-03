@@ -1,0 +1,20 @@
+{
+  "name": "brightnucleus/geolite2-country",
+  "description": "Composer-packaged version of the free MaxMind GeoLite2 Country database.",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Alain Schlesser",
+      "email": "alain.schlesser@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BrightNucleus\\GeoLite2Country\\": "src/"
+    }
+  },
+  "scripts": {
+    "post-update-cmd": "BrightNucleus\\GeoLite2Country\\Database::update",
+    "post-install-cmd": "BrightNucleus\\GeoLite2Country\\Database::update"
+  }
+}
