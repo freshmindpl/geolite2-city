@@ -11,7 +11,12 @@
 
 namespace BrightNucleus\GeoLite2Country;
 
+use Composer\Composer;
+use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\IO\IOInterface;
+use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 
 /**
  * Class Database.
@@ -21,13 +26,26 @@ use Composer\Script\Event;
  * @package BrightNucleus\GeoLite2Country
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-class Database
+class Database implements PluginInterface, EventSubscriberInterface
 {
 
     const DB_FILENAME = 'GeoLite2-Country.mmdb';
     const DB_FOLDER   = 'data';
     const DB_URL      = 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz';
     const MD5_URL     = 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.md5';
+
+    /**
+     * Get the event subscriber configuration for this plugin.
+     *
+     * @return array<string,string> The events to listen to, and their associated handlers.
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            ScriptEvents::POST_INSTALL_CMD => 'update',
+            ScriptEvents::POST_UPDATE_CMD  => 'update',
+        );
+    }
 
     /**
      * Update the stored database.
@@ -173,5 +191,18 @@ class Database
         if (is_file($filename)) {
             unlink($filename);
         }
+    }
+
+    /**
+     * Activate the plugin.
+     *
+     * @since 0.1.3
+     *
+     * @param Composer    $composer The main Composer object.
+     * @param IOInterface $io       The i/o interface to use.
+     */
+    public function activate(Composer $composer, IOInterface $io)
+    {
+        // no action required
     }
 }
