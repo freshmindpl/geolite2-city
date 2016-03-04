@@ -57,6 +57,9 @@ class Database
         $io->write('Unzipping the database...', true);
         self::unzipFile($dbFilename);
 
+        $io->write('Removing zipped file...', true);
+        self::removeFile($dbFilename . '.gz');
+
         $io->write('The MaxMind GeoLite2 Country database has been updated.', true);
     }
 
@@ -156,5 +159,19 @@ class Database
 
         fclose($unzippedFile);
         gzclose($zippedFile);
+    }
+
+    /**
+     * Delete a file.
+     *
+     * @since 0.1.2
+     *
+     * @param string $filename Filename of the file to delete.
+     */
+    protected static function removeFile($filename)
+    {
+        if (is_file($filename)) {
+            unlink($filename);
+        }
     }
 }
