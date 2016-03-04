@@ -13,6 +13,8 @@ The main advantage is that the downloaded database will be checked for updates o
 
 * [Attribution](#attribution)
 * [Installation](#installation)
+    * [Add Package As A Requirement](#add-package-as-a-requirement)
+    * [Add A Hook To The Update Method](#add-a-hook-to-the-update-method)
 * [Basic Usage](#basic-usage)
 * [Contributing](#contributing)
 
@@ -23,10 +25,42 @@ This product includes GeoLite2 data created by MaxMind, available from
 
 ## Installation
 
-You should include this package as a dependency of your project using Composer:
+To make this work, you need to add this package as a requirement and add a hook to the update mechanism to your own package.
 
+### Add Package As A Requirement
+
+You can either do this via the command-line with the following command:
 ```BASH
 composer require brightnucleus/geolite2-country
+```
+
+Or, you can add the package directly to your `require` section in your `composer.json` file:
+
+```JSON
+{
+  "name": "<vendor>/<package>",
+  // [ ... ]
+  "require": {
+    // [ ... ]
+    "brightnucleus/geolite2-country": "*"
+  }
+}
+```
+
+### Add A Hook To The Update Method
+
+You need to add the following hooks to your `scripts` section of your `composer.json` file:
+
+```JSON
+{
+  "name": "<vendor>/<package>",
+  // [ ... ]
+  "scripts": {
+    // [ ... ]
+    "post-update-cmd": "BrightNucleus\\GeoLite2Country\\Database::update",
+    "post-install-cmd": "BrightNucleus\\GeoLite2Country\\Database::update"
+  }
+}
 ```
 
 ## Basic Usage
