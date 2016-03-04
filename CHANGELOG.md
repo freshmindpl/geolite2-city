@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.4] - 2016-03-04
+### Fixed
+- Corrected the `README.md` to adapt it to the recent changes and added example code.
+
 ## [0.1.3] - 2016-03-04
 ### Added
 - Changed class into a Composer plugin to work around the fact that Composer does not call dependency scripts automatically.
@@ -18,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.1.4]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.0...v0.1.1
