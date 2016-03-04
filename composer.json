@@ -19,6 +19,6 @@
     }
   },
   "extra": {
-    "class": "BrightNucleus\\GeoLite2Country\\Database"
+    "class": "BrightNucleus\\GeoLite2Country\\DatabaseUpdater"
   }
 }
