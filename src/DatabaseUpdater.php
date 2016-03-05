@@ -56,7 +56,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         self::maybeCreateDBFolder(dirname($dbFilename));
 
         $oldMD5 = self::getMD5($dbFilename . '.md5');
-        self::downloadFile($dbFilename . '.md5', self::MD5_URL);
+        self::downloadFile($dbFilename . '.md5', Database::MD5_URL);
 
         $newMD5 = self::getMD5($dbFilename . '.md5');
         if ($newMD5 === $oldMD5) {
@@ -65,7 +65,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
 
         $io = $event->getIO();
         $io->write('Fetching new version of the MaxMind GeoLite2 Country database...', true);
-        self::downloadFile($dbFilename . '.gz', self::DB_URL);
+        self::downloadFile($dbFilename . '.gz', Database::DB_URL);
 
         $io->write('Unzipping the database...', true);
         self::unzipFile($dbFilename);
