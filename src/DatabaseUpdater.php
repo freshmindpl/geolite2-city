@@ -4,7 +4,7 @@
  *
  * @package   BrightNucleus\GeoLite2Country
  * @author    Alain Schlesser <alain.schlesser@gmail.com>
- * @license   GPL-2.0+
+ * @license   MIT
  * @link      http://www.brightnucleus.com/
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
@@ -73,7 +73,13 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         $io->write('Removing zipped file...', true);
         self::removeFile($dbFilename . '.gz');
 
-        $io->write('The MaxMind GeoLite2 Country database has been updated.', true);
+        $io->write(
+            sprintf(
+                'The MaxMind GeoLite2 Country database has been updated (%1$s).',
+                $dbFilename
+            ),
+            true
+        );
     }
 
     /**

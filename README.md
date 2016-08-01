@@ -16,6 +16,7 @@ The main advantage is that the downloaded database will be checked for updates o
 * [Basic Usage](#basic-usage)
 * [Example](#example)
 * [Contributing](#contributing)
+* [License](#license)
 
 ## Attribution
 
@@ -67,3 +68,9 @@ function getCountry($ip) {
 ## Contributing
 
 All feedback / bug reports / pull requests are welcome.
+
+## License
+
+This code is released under the MIT license.
+
+For the full copyright and license information, please view the [`LICENSE`](LICENSE) file distributed with this source code.

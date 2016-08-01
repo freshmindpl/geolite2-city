@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.0] - 2016-08-01
+### Added
+- Added the path to the data to the Composer output.
+- Added `LICENSE` file.
+
+### Changed
+- Changed license from GPL-v2.0+ to MIT.
+
 ## [0.1.6] - 2016-03-05
 ### Fixed
 - Changed two constants that were now referencing the wrong class.
@@ -30,6 +38,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.2.0]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.6...v0.2.0
 [0.1.6]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.3...v0.1.4
