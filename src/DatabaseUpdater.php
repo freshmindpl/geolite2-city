@@ -65,7 +65,14 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         $newMD5 = self::getContents($dbFilename . '.md5.new');
         $io->isVerbose() && $io->write('MD5 of current remote DB file: ' . $newMD5, true);
         if ($newMD5 === $oldMD5) {
-            return;
+            $io->write(
+                sprintf(
+                    'The local MaxMind GeoLite2 Country database is already up to date (%1$s).',
+                    $dbFilename
+                ),
+                true
+            );
+            return 0;
         }
 
         // If the download was corrupted, retry three times before aborting.
@@ -113,7 +120,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
 
         $io->write(
             sprintf(
-                'The MaxMind GeoLite2 Country database has been updated (%1$s).',
+                'The local MaxMind GeoLite2 Country database has been updated (%1$s).',
                 $dbFilename
             ),
             true
