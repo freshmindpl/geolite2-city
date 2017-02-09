@@ -4,11 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.2] - 2017-02-09
 ### Changed
-- Further improve notifications. Props @GaryJones
+- Further improve notifications. Props [@GaryJones](https://github.com/GaryJones)
 
 ### Fixed
-- Let user know when the database is already up to date. Props @GaryJones
-- Fix typo. Props @GaryJones
+- Let user know when the database is already up to date. Props [@GaryJones](https://github.com/GaryJones)
+- Fix typo. Props [@GaryJones](https://github.com/GaryJones)
 
 ## [0.2.1] - 2017-02-09
 ### Added
