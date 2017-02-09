@@ -53,25 +53,63 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
     {
         $dbFilename = Database::getLocation();
 
+        $io = $event->getIO();
+
+        $io->isVerbose() && $io->write('Making sure the DB folder exists...', true);
         self::maybeCreateDBFolder(dirname($dbFilename));
 
-        $oldMD5 = self::getMD5($dbFilename . '.md5');
-        self::downloadFile($dbFilename . '.md5', Database::MD5_URL);
+        $oldMD5 = self::getContents($dbFilename . '.md5');
+        $io->isVerbose() && $io->write('MD5 of existing local DB file: ' . $oldMD5, true);
+        self::downloadFile($dbFilename . '.md5.new', Database::MD5_URL);
 
-        $newMD5 = self::getMD5($dbFilename . '.md5');
+        $newMD5 = self::getContents($dbFilename . '.md5.new');
+        $io->isVerbose() && $io->write('MD5 of current remote DB file: ' . $newMD5, true);
         if ($newMD5 === $oldMD5) {
             return;
         }
 
-        $io = $event->getIO();
-        $io->write('Fetching new version of the MaxMind GeoLite2 Country database...', true);
-        self::downloadFile($dbFilename . '.gz', Database::DB_URL);
+        // If the download was corrupted, retry three times before aborting.
+        // If the update is aborted, the currently active DB file stays in place, to not break a site on failed updates.
+        $retry = 3;
+        while ($retry > 0) {
+            $io->write('Fetching new version of the MaxMind GeoLite2 Country database...', true);
+            self::downloadFile($dbFilename . '.gz', Database::DB_URL);
 
-        $io->write('Unzipping the database...', true);
-        self::unzipFile($dbFilename);
+            // We unzip into a temporary file, so as not to destroy the DB that is known to be working.
+            $io->write('Unzipping the database...', true);
+            self::unzipFile($dbFilename . '.gz', $dbFilename . '.tmp');
+            self::removeFile($dbFilename . '.gz');
 
-        $io->write('Removing zipped file...', true);
-        self::removeFile($dbFilename . '.gz');
+            $io->write('Verifying integrity of the downloaded database file...', true);
+            $downloadMD5 = self::calculateMD5($dbFilename . '.tmp');
+            $io->isVerbose() && $io->write('MD5 of downloaded DB file: ' . $downloadMD5, true);
+
+            // Download was successful, so now we replace the existing DB file with the freshlay downloaded one.
+            if ($downloadMD5 === $newMD5) {
+                $retry = 0;
+                self::removeFile($dbFilename);
+                self::removeFile($dbFilename . '.md5');
+                self::renameFile($dbFilename . '.tmp', $dbFilename);
+                self::renameFile($dbFilename . '.md5.new', $dbFilename . '.md5');
+                continue;
+            }
+
+            // The download was fishy, so we remove intermediate files and retry.
+            $io->write('Downloaded file did not match expected MD5, retrying...', true);
+            self::removeFile($dbFilename . '.tmp');
+            $retry--;
+        }
+
+        // Even several retries did not produce a proper download, so we remove intermediate files and let the user know
+        // about the issue.
+        if (! isset($downloadMD5)
+            || $downloadMD5 !== $newMD5
+        ) {
+            self::removeFile($dbFilename . '.md5.new');
+            $io->writeError('Failed to download the MaxMind GeoLite2 Country database! Aborting update.');
+
+            return -1;
+        }
 
         $io->write(
             sprintf(
@@ -97,20 +135,33 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * Get the MD5 string contained within a file.
+     * Get the content from within a file.
      *
-     * @since 0.1.0
+     * @since 0.2.1
      *
-     * @param string $filename Filename of the MD5 file.
-     * @return string MD5 hash contained within the file. Empty string if not found.
+     * @param string $filename Filename.
+     * @return string File content.
      */
-    protected static function getMD5($filename)
+    protected static function getContents($filename)
     {
         if (! is_file($filename)) {
             return '';
         }
 
         return file_get_contents($filename);
+    }
+
+    /**
+     * Calculate the MD5 hash of a file.
+     *
+     * @since 0.2.1
+     *
+     * @param string $filename Filename of the MD5 file.
+     * @return string MD5 hash contained within the file. Empty string if not found.
+     */
+    protected static function calculateMD5($filename)
+    {
+        return md5(self::getContents($filename));
     }
 
     /**
@@ -141,14 +192,15 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
      *
      * @since 0.1.0
      *
-     * @param string $filename Filename of the database, without .gz extension.
+     * @param string $source      Source, zipped filename to unzip.
+     * @param string $destination Destination filename to write the unzipped contents to.
      */
-    protected static function unzipFile($filename)
+    protected static function unzipFile($source, $destination)
     {
         $buffer_size = 4096;
 
-        $zippedFile   = gzopen($filename . '.gz', 'rb');
-        $unzippedFile = fopen($filename, 'wb');
+        $zippedFile   = gzopen($source, 'rb');
+        $unzippedFile = fopen($destination, 'wb');
 
         while (! gzeof($zippedFile)) {
             fwrite($unzippedFile, gzread($zippedFile, $buffer_size));
@@ -169,6 +221,21 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
     {
         if (is_file($filename)) {
             unlink($filename);
+        }
+    }
+
+    /**
+     * Rename a file.
+     *
+     * @since 0.1.2
+     *
+     * @param string $source      Source filename of the file to rename.
+     * @param string $destination Destination filename to rename the file to.
+     */
+    protected static function renameFile($source, $destination)
+    {
+        if (is_file($source)) {
+            rename($source, $destination);
         }
     }
 

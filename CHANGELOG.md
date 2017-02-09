@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - 2017-02-09
+### Added
+- Added integrity check to make sure the downloaded database file matches the expected MD5 hash.
+- Added a mechanism to retry failed downloads three times before aborting.
+
+### Changed
+- All update operations work on temporary files until the download is confirmed to be good, to avoid breaking already working code on updates.
+
 ## [0.2.0] - 2016-08-01
 ### Added
 - Added the path to the data to the Composer output.
@@ -38,6 +46,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.2.1]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.6...v0.2.0
 [0.1.6]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.4...v0.1.5
