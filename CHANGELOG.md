@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.2] - 2017-02-09
+### Changed
+- Further improve notifications. Props @GaryJones
+
+### Fixed
+- Let user know when the database is already up to date. Props @GaryJones
+- Fix typo. Props @GaryJones
+
 ## [0.2.1] - 2017-02-09
 ### Added
 - Added integrity check to make sure the downloaded database file matches the expected MD5 hash.
@@ -46,6 +54,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release to GitHub.
 
+[0.2.2]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.6...v0.2.0
 [0.1.6]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.5...v0.1.6
