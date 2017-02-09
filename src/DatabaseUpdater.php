@@ -55,23 +55,35 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
 
         $io = $event->getIO();
 
-        $io->isVerbose() && $io->write('Making sure the DB folder exists...', true);
+        $io->write('Making sure the DB folder exists: ' . dirname($dbFilename), true, IOInterface::VERBOSE);
         self::maybeCreateDBFolder(dirname($dbFilename));
 
         $oldMD5 = self::getContents($dbFilename . '.md5');
-        $io->isVerbose() && $io->write('MD5 of existing local DB file: ' . $oldMD5, true);
+        $io->write('MD5 of existing local DB file: ' . $oldMD5, true, IOInterface::VERBOSE);
+
+        $io->write('Fetching remote MD5 hash...');
+        $io->write(
+            sprintf(
+                'Downloading file: %1$s => %2$s',
+                Database::MD5_URL,
+                $dbFilename . '.md5.new'
+            ),
+                true,
+                IOInterface::VERBOSE
+        );
         self::downloadFile($dbFilename . '.md5.new', Database::MD5_URL);
 
         $newMD5 = self::getContents($dbFilename . '.md5.new');
-        $io->isVerbose() && $io->write('MD5 of current remote DB file: ' . $newMD5, true);
+        $io->write('MD5 of current remote DB file: ' . $newMD5, true, IOInterface::VERBOSE);
         if ($newMD5 === $oldMD5) {
             $io->write(
                 sprintf(
-                    'The local MaxMind GeoLite2 Country database is already up to date (%1$s).',
+                    '<info>The local MaxMind GeoLite2 Country database is already up to date</info>. (%1$s)',
                     $dbFilename
                 ),
                 true
             );
+
             return 0;
         }
 
@@ -80,30 +92,59 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         $retry = 3;
         while ($retry > 0) {
             $io->write('Fetching new version of the MaxMind GeoLite2 Country database...', true);
+            $io->write(
+                sprintf(
+                    'Downloading file: %1$s => %2$s',
+                    Database::DB_URL,
+                    $dbFilename . '.gz'
+                ),
+                true,
+                IOInterface::VERBOSE
+            );
             self::downloadFile($dbFilename . '.gz', Database::DB_URL);
 
             // We unzip into a temporary file, so as not to destroy the DB that is known to be working.
             $io->write('Unzipping the database...', true);
+
+            $io->write('Unzipping file: ' . $dbFilename . '.gz => ' . $dbFilename . '.tmp', true, IOInterface::VERBOSE);
             self::unzipFile($dbFilename . '.gz', $dbFilename . '.tmp');
+
+            $io->write('Removing file: ' . $dbFilename . '.gz', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.gz');
 
             $io->write('Verifying integrity of the downloaded database file...', true);
             $downloadMD5 = self::calculateMD5($dbFilename . '.tmp');
-            $io->isVerbose() && $io->write('MD5 of downloaded DB file: ' . $downloadMD5, true);
+            $io->write('MD5 of downloaded DB file: ' . $downloadMD5, true, IOInterface::VERBOSE);
 
             // Download was successful, so now we replace the existing DB file with the freshly downloaded one.
             if ($downloadMD5 === $newMD5) {
+                $io->write('All good, replacing previous version of the database with the downloaded one...', true);
                 $retry = 0;
+
+                $io->write('Removing file: ' . $dbFilename, true, IOInterface::VERBOSE);
                 self::removeFile($dbFilename);
+
+                $io->write('Removing file: ' . $dbFilename . '.md5', true, IOInterface::VERBOSE);
                 self::removeFile($dbFilename . '.md5');
+
+                $io->write('Renaming file: ' . $dbFilename . '.tmp => ' . $dbFilename, true, IOInterface::VERBOSE);
                 self::renameFile($dbFilename . '.tmp', $dbFilename);
+
+                $io->write(
+                    'Renaming file: ' . $dbFilename . '.md5.new => ' . $dbFilename . '.md5',
+                    true,
+                    IOInterface::VERBOSE
+                );
                 self::renameFile($dbFilename . '.md5.new', $dbFilename . '.md5');
                 continue;
             }
 
             // The download was fishy, so we remove intermediate files and retry.
             $io->write('Downloaded file did not match expected MD5, retrying...', true);
+
+            $io->write('Removing file: ' . $dbFilename . '.tmp', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.tmp');
+
             $retry--;
         }
 
@@ -112,7 +153,9 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         if (! isset($downloadMD5)
             || $downloadMD5 !== $newMD5
         ) {
+            $io->write('Removing file: ' . $dbFilename . '.md5.new', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.md5.new');
+
             $io->writeError('Failed to download the MaxMind GeoLite2 Country database! Aborting update.');
 
             return -1;
@@ -120,7 +163,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
 
         $io->write(
             sprintf(
-                'The local MaxMind GeoLite2 Country database has been updated (%1$s).',
+                '<info>The local MaxMind GeoLite2 Country database has been updated.</info> (%1$s)',
                 $dbFilename
             ),
             true
