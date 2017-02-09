@@ -84,7 +84,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
             $downloadMD5 = self::calculateMD5($dbFilename . '.tmp');
             $io->isVerbose() && $io->write('MD5 of downloaded DB file: ' . $downloadMD5, true);
 
-            // Download was successful, so now we replace the existing DB file with the freshlay downloaded one.
+            // Download was successful, so now we replace the existing DB file with the freshly downloaded one.
             if ($downloadMD5 === $newMD5) {
                 $retry = 0;
                 self::removeFile($dbFilename);
