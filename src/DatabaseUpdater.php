@@ -140,7 +140,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
             }
 
             // The download was fishy, so we remove intermediate files and retry.
-            $io->write('Downloaded file did not match expected MD5, retrying...', true);
+            $io->write('<comment>Downloaded file did not match expected MD5, retrying...</comment>', true);
 
             $io->write('Removing file: ' . $dbFilename . '.tmp', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.tmp');
