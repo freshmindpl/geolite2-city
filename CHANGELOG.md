@@ -4,11 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.2] - 2017-02-09
 ### Changed
-- Further improve notifications. Props [@GaryJones](https://github.com/GaryJones)
+- Further improve notifications. Props [Gary Jones]
 
 ### Fixed
-- Let user know when the database is already up to date. Props [@GaryJones](https://github.com/GaryJones)
-- Fix typo. Props [@GaryJones](https://github.com/GaryJones)
+- Let user know when the database is already up to date. Props [Gary Jones](https://github.com/GaryJones)
+- Fix typo. Props [Gary Jones](https://github.com/GaryJones)
 
 ## [0.2.1] - 2017-02-09
 ### Added
@@ -53,6 +53,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.1.0] - 2016-03-03
 ### Added
 - Initial release to GitHub.
+
+[Gary Jones]: https://github.com/GaryJones
 
 [0.2.2]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.0...v0.2.1
