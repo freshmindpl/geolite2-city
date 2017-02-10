@@ -156,7 +156,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
             $io->write('Removing file: ' . $dbFilename . '.md5.new', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.md5.new');
 
-            $io->writeError('Failed to download the MaxMind GeoLite2 Country database! Aborting update.');
+            $io->writeError('<error>Failed to download the MaxMind GeoLite2 Country database! Aborting update.</error>');
 
             return -1;
         }
