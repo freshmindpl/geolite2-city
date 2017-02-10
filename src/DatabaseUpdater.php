@@ -84,7 +84,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
                 true
             );
 
-            return 0;
+            return;
         }
 
         // If the download was corrupted, retry three times before aborting.
@@ -158,7 +158,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
 
             $io->writeError('<error>Failed to download the MaxMind GeoLite2 Country database! Aborting update.</error>');
 
-            return -1;
+            return;
         }
 
         $io->write(
