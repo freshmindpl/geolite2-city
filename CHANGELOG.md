@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.3] - 2017-02-10
+### Changed
+- Additional notification improvements. Props [Gary Jones]
+
 ## [0.2.2] - 2017-02-09
 ### Changed
 - Further improve notifications. Props [Gary Jones]
@@ -56,6 +60,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [Gary Jones]: https://github.com/GaryJones
 
+[0.2.3]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/brightnucleus/geolite2-country/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/brightnucleus/geolite2-country/compare/v0.1.6...v0.2.0
