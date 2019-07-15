@@ -1,15 +1,15 @@
 <?php
 /**
- * Composer-packaged version of the free MaxMind GeoLite2 Country database.
+ * Composer-packaged version of the free MaxMind GeoLite2 City database.
  *
- * @package   BrightNucleus\GeoLite2Country
+ * @package   BrightNucleus\GeoLite2City
  * @author    Alain Schlesser <alain.schlesser@gmail.com>
  * @license   MIT
  * @link      http://www.brightnucleus.com/
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\GeoLite2Country;
+namespace BrightNucleus\GeoLite2City;
 
 /**
  * Class Database.
@@ -22,10 +22,10 @@ namespace BrightNucleus\GeoLite2Country;
 class Database
 {
 
-    const DB_FILENAME = 'GeoLite2-Country.mmdb';
+    const DB_FILENAME = 'GeoLite2-City.mmdb';
     const DB_FOLDER   = 'data';
-    const DB_URL      = 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz';
-    const MD5_URL     = 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.md5';
+    const DB_URL      = 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz';
+    const MD5_URL     = 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.md5';
 
     /**
      * Get the location of the database file.

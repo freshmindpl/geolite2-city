@@ -1,15 +1,15 @@
 <?php
 /**
- * Composer-packaged version of the free MaxMind GeoLite2 Country database.
+ * Composer-packaged version of the free MaxMind GeoLite2 City database.
  *
- * @package   BrightNucleus\GeoLite2Country
+ * @package   BrightNucleus\GeoLite2City
  * @author    Alain Schlesser <alain.schlesser@gmail.com>
  * @license   MIT
  * @link      http://www.brightnucleus.com/
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-namespace BrightNucleus\GeoLite2Country;
+namespace BrightNucleus\GeoLite2City;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -78,7 +78,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         if ($newMD5 === $oldMD5) {
             $io->write(
                 sprintf(
-                    '<info>The local MaxMind GeoLite2 Country database is already up to date</info>. (%1$s)',
+                    '<info>The local MaxMind GeoLite2 City database is already up to date</info>. (%1$s)',
                     $dbFilename
                 ),
                 true
@@ -91,7 +91,7 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
         // If the update is aborted, the currently active DB file stays in place, to not break a site on failed updates.
         $retry = 3;
         while ($retry > 0) {
-            $io->write('Fetching new version of the MaxMind GeoLite2 Country database...', true);
+            $io->write('Fetching new version of the MaxMind GeoLite2 City database...', true);
             $io->write(
                 sprintf(
                     'Downloading file: %1$s => %2$s',
@@ -156,14 +156,14 @@ class DatabaseUpdater implements PluginInterface, EventSubscriberInterface
             $io->write('Removing file: ' . $dbFilename . '.md5.new', true, IOInterface::VERBOSE);
             self::removeFile($dbFilename . '.md5.new');
 
-            $io->writeError('<error>Failed to download the MaxMind GeoLite2 Country database! Aborting update.</error>');
+            $io->writeError('<error>Failed to download the MaxMind GeoLite2 City database! Aborting update.</error>');
 
             return;
         }
 
         $io->write(
             sprintf(
-                '<info>The local MaxMind GeoLite2 Country database has been updated.</info> (%1$s)',
+                '<info>The local MaxMind GeoLite2 City database has been updated.</info> (%1$s)',
                 $dbFilename
             ),
             true

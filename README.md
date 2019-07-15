@@ -1,11 +1,6 @@
-# Bright Nucleus GeoLite2 Country Database
+# Bright Nucleus GeoLite2 City Database
 
-[![Latest Stable Version](https://poser.pugx.org/brightnucleus/geolite2-country/v/stable)](https://packagist.org/packages/brightnucleus/geolite2-country)
-[![Total Downloads](https://poser.pugx.org/brightnucleus/geolite2-country/downloads)](https://packagist.org/packages/brightnucleus/geolite2-country)
-[![Latest Unstable Version](https://poser.pugx.org/brightnucleus/geolite2-country/v/unstable)](https://packagist.org/packages/brightnucleus/geolite2-country)
-[![License](https://poser.pugx.org/brightnucleus/geolite2-country/license)](https://packagist.org/packages/brightnucleus/geolite2-country)
-
-This is a Composer plugin that provides an automated binary version of the free MaxMind GeoLite2 Country database.
+This is a Composer plugin that provides an automated binary version of the free MaxMind GeoLite2 City database.
 
 The main advantage is that the downloaded database will be checked for updates on each `composer install` and `composer update`.
 
@@ -28,7 +23,7 @@ This product includes GeoLite2 data created by MaxMind, available from
 The only thing you need to do to make this work is adding this package as a dependency to your project:
 
 ```BASH
-composer require brightnucleus/geolite2-country
+composer require freshmindpl/geolite2-city
 ```
 
 ## Basic Usage
@@ -40,7 +35,7 @@ To retrieve the path to the binary database file from within your project, you c
 ```PHP
 <?php
 
-use BrightNucleus\GeoLite2Country\Database;
+use BrightNucleus\GeoLite2City\Database;
 
 $dbLocation = Database::getLocation();
 ```
@@ -57,11 +52,11 @@ The following example assumes that you have added the [`geoip2/geoip2`](https://
 use GeoIp2\Database\Reader;
 use BrightNucleus\GeoLite2Country\Database;
 
-function getCountry($ip) {
+function getCity($ip) {
     $dbLocation = Database::getLocation();
     $reader = new Reader($dbLocation);
 
-    return $reader->country($ip);
+    return $reader->city($ip);
 }
 ```
 
